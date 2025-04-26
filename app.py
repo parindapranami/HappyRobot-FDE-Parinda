@@ -75,7 +75,7 @@ def verify_carrier():
             return jsonify({"error": "Missing mc_number parameter"}), 400
         
         # Remove 'MC' prefix if exists
-        mc_number = mc_number.upper().replace('MC', '').strip()
+        mc_number = ''.join(filter(str.isdigit, mc_number))
 
         dot_number, legal_name = get_dot_number_from_mc(mc_number)
         if not dot_number:
