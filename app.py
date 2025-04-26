@@ -11,7 +11,6 @@ load_dotenv()
 
 
 loads_df = pd.read_csv('loads.csv')
-loads_df['reference_number'] = loads_df['reference_number'].str.strip().str.upper()
 
 
 API_KEY = os.getenv("API_KEY", "PERSONAL_API_KEY")
@@ -67,11 +66,18 @@ def is_authorized_for_hire(dot_number):
 
 
 # Step 3: Verify the carrier using the MC number
-@app.route('/verify_carrier/<MC_number>', methods=['GET'])
+@app.route('/verify_carrier', methods=['GET'])
 @require_api_key
-def verify_carrier(MC_number):
+def verify_carrier():
     try:
-        dot_number, legal_name = get_dot_number_from_mc(MC_number)
+        mc_number = request.args.get('mc_number')
+        if not mc_number:
+            return jsonify({"error": "Missing mc_number parameter"}), 400
+        
+        # Remove 'MC' prefix if exists
+        mc_number = mc_number.upper().replace('MC', '').strip()
+
+        dot_number, legal_name = get_dot_number_from_mc(mc_number)
         if not dot_number:
             return jsonify({
                 "verified": False,
@@ -105,13 +111,17 @@ def find_available_loads():
     destination = data.get('destination')
     equipment_type = data.get('equipment_type')
 
-    if reference_number:
-        reference_number = reference_number.strip().upper()
+    if reference_number is not None:
+        try:
+            reference_number = int(reference_number)
+        except ValueError:
+            return jsonify({"error": "reference_number must be an integer"}), 400
+
         load = loads_df[loads_df['reference_number'] == reference_number]
         if load.empty:
             return jsonify({"error": "Load not found by reference number"}), 404
         return jsonify(load.to_dict(orient='records')[0])
-
+    
     elif origin and destination and equipment_type:
         filtered = loads_df[
             (loads_df['origin'] == origin) &
@@ -121,6 +131,7 @@ def find_available_loads():
         if filtered.empty:
             return jsonify({"error": "No matching loads found by lane and equipment"}), 404
         return jsonify(filtered.to_dict(orient='records'))
+        
     else:
         return jsonify({"error": "Insufficient information. Provide either reference_number or (origin, destination, equipment_type)."}), 400
 

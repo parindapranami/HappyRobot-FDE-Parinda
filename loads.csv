@@ -1,9 +1,9 @@
 reference_number,origin,destination,equipment_type,rate,commodity
-REF09460,"Denver, CO","Detroit, MI",Dry Van,868,Automotive Parts
-REF04684,"Dallas, TX","Chicago, IL",Dry Van or Flatbed,570,Agricultural Products
-REF09690,"Detroit, MI","Nashville, TN",Dry Van,1495,Industrial Equipment
-REF12345,"Los Angeles, CA","Phoenix, AZ",Flatbed,950,Building Materials
-REF67890,"Atlanta, GA","Orlando, FL",Dry Van,725,Consumer Goods
-REF24680,"Seattle, WA","Portland, OR",Refrigerated,1200,Frozen Foods
-REF13579,"Miami, FL","Houston, TX",Dry Van,1100,Pharmaceuticals
-REF98765,"New York, NY","Boston, MA",Dry Van or Reefer,850,Electronics
+09460,"Denver, CO","Detroit, MI",Dry Van,868,Automotive Parts
+04684,"Dallas, TX","Chicago, IL",Dry Van or Flatbed,570,Agricultural Products
+09690,"Detroit, MI","Nashville, TN",Dry Van,1495,Industrial Equipment
+12345,"Los Angeles, CA","Phoenix, AZ",Flatbed,950,Building Materials
+67890,"Atlanta, GA","Orlando, FL",Dry Van,725,Consumer Goods
+24680,"Seattle, WA","Portland, OR",Refrigerated,1200,Frozen Foods
+13579,"Miami, FL","Houston, TX",Dry Van,1100,Pharmaceuticals
+98765,"New York, NY","Boston, MA",Dry Van or Reefer,850,Electronics
