@@ -71,11 +71,13 @@ def is_authorized_for_hire(dot_number):
 def verify_carrier():
     try:
         mc_number = request.args.get('mc_number')
+        print(f"[DEBUG] Received mc_number: {mc_number}")
         if not mc_number:
             return jsonify({"error": "Missing mc_number parameter"}), 400
         
         # Remove 'MC' prefix if exists
         mc_number = ''.join(filter(str.isdigit, mc_number))
+        print(f"[DEBUG] cleaned mc_number: {mc_number}")
 
         dot_number, legal_name = get_dot_number_from_mc(mc_number)
         if not dot_number:
