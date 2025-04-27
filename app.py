@@ -9,8 +9,8 @@ import pandas as pd
 app = Flask(__name__)
 load_dotenv()
 
-
-loads_df = pd.read_csv('loads.csv')
+# indexing for faster lookups and efficient querying
+loads_df = pd.read_csv('loads.csv', index_col='reference_number')
 
 
 API_KEY = os.getenv("API_KEY", "PERSONAL_API_KEY")
@@ -71,14 +71,12 @@ def is_authorized_for_hire(dot_number):
 def verify_carrier():
     try:
         mc_number = request.args.get('mc_number')
-        print(f"[DEBUG] Received mc_number: {mc_number}")
         if not mc_number:
             return jsonify({"error": "Missing mc_number parameter"}), 400
         
         # Remove 'MC' prefix if exists
         mc_number = ''.join(filter(str.isdigit, mc_number))
-        print(f"[DEBUG] cleaned mc_number: {mc_number}")
-
+       
         dot_number, legal_name = get_dot_number_from_mc(mc_number)
         if not dot_number:
             return jsonify({
@@ -113,15 +111,16 @@ def find_available_loads():
     destination = data.get('destination')
     equipment_type = data.get('equipment_type')
 
-    if reference_number is not None:
+    if reference_number not in [None, ""]:
         try:
             reference_number = int(reference_number)
         except ValueError:
             return jsonify({"error": "reference_number must be an integer"}), 400
-
-        load = loads_df[loads_df['reference_number'] == reference_number]
-        if load.empty:
+        
+        if reference_number not in loads_df.index:
             return jsonify({"error": "Load not found by reference number"}), 404
+
+        load = loads_df.loc[[reference_number]]  
         return jsonify(load.to_dict(orient='records')[0])
     
     elif origin and destination and equipment_type:
