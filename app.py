@@ -125,9 +125,9 @@ def find_available_loads():
     
     elif origin and destination and equipment_type:
         filtered = loads_df[
-            (loads_df['origin'] == origin) &
-            (loads_df['destination'] == destination) &
-            (loads_df['equipment_type'].str.contains(equipment_type, case=False, na=False))
+        (loads_df['origin'].str.contains(origin, case=False, na=False)) &
+        (loads_df['destination'].str.contains(destination, case=False, na=False)) &
+        (loads_df['equipment_type'].str.contains(equipment_type, case=False, na=False))
         ]
         if filtered.empty:
             return jsonify({"error": "No matching loads found by lane and equipment"}), 404
