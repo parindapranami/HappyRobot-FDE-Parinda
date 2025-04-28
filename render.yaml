@@ -1,7 +1,6 @@
 services:
   - type: web
-    name: flask-api
-    env: python
-    buildCommand: ""
-    startCommand: gunicorn app:app
+    name: HappyRobot-FDE-Parinda
+    env: docker
+    dockerfile: Dockerfile
     plan: free

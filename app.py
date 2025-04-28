@@ -138,4 +138,4 @@ def find_available_loads():
 
 #HTTPS will be handled by the cloud provider
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
